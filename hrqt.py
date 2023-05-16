@@ -7,7 +7,7 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-
+from Database import db
 
 class Ui_HealthRecord(object):
     def setupUi(self, HealthRecord):
@@ -75,18 +75,23 @@ class Ui_HealthRecord(object):
         self.textBrowser_11 = QtWidgets.QTextBrowser(parent=self.centralwidget)
         self.textBrowser_11.setGeometry(QtCore.QRect(400, 540, 631, 31))
         self.textBrowser_11.setObjectName("textBrowser_11")
+
         self.NameBox = QtWidgets.QTextEdit(parent=self.centralwidget)
         self.NameBox.setGeometry(QtCore.QRect(150, 180, 104, 21))
         self.NameBox.setObjectName("NameBox")
+
         self.CPRBox = QtWidgets.QTextEdit(parent=self.centralwidget)
         self.CPRBox.setGeometry(QtCore.QRect(150, 210, 104, 21))
         self.CPRBox.setObjectName("CPRBox")
+
         self.PhoneBox = QtWidgets.QTextEdit(parent=self.centralwidget)
         self.PhoneBox.setGeometry(QtCore.QRect(150, 240, 104, 21))
         self.PhoneBox.setObjectName("PhoneBox")
+
         self.AdressBox = QtWidgets.QTextEdit(parent=self.centralwidget)
         self.AdressBox.setGeometry(QtCore.QRect(150, 270, 104, 21))
         self.AdressBox.setObjectName("AdressBox")
+
         self.EmergencyNameBox = QtWidgets.QTextEdit(parent=self.centralwidget)
         self.EmergencyNameBox.setGeometry(QtCore.QRect(100, 370, 104, 21))
         self.EmergencyNameBox.setObjectName("EmergencyNameBox")
@@ -290,6 +295,29 @@ class Ui_HealthRecord(object):
         self.menuFront_page.setTitle(_translate("HealthRecord", "Front_page"))
         self.menuAppointments.setTitle(_translate("HealthRecord", "Appointments"))
         self.menuMessage.setTitle(_translate("HealthRecord", "Message"))
+
+    def UpdateWindow(self, CPR):
+        conn = db
+        cursor = conn.cursor()
+        print('1')
+        try:
+            query = f"SELECT * FROM Patients WHERE CPR = '{CPR}'"
+            cursor.execute(query)
+            print('2')
+            data = cursor.fetchall()
+            print(data)
+
+            for info in data:
+                self.CPRBox.setHtml(info[0])
+                self.NameBox.setHtml(info[1])
+                self.PhoneBox.setHtml(info[2])
+                self.AdressBox.setHtml(info[3])
+
+        except Exception as e:
+            print(e)
+
+
+
 
 
 if __name__ == "__main__":
